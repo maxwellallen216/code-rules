@@ -17,6 +17,8 @@ Global rules are never replaced. A language file is a delta on top of `global/`:
 
 Read them fresh each task. The user adds, edits, and deletes rule files freely, so a rule you remember from an earlier session may be gone or changed.
 
+Within a session, what you read once goes stale the moment `rules/` changes. Re-read the applicable folders before you write again whenever a rule file was added, edited, or deleted — by you or by the user — or when the work reaches a language whose folder you haven't loaded yet. Nothing watches the folder for you; noticing is your job.
+
 ## 2. Name the edge cases instead of guessing
 
 | Situation                                                                               | What to do                                                                                                                                                                                                                                                                                                                                                   |
