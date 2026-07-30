@@ -1,32 +1,35 @@
 ---
 name: code-rules
-description: Applies the user's own coding rules — comment discipline, matching existing codebase style, and any custom rules in this skill's rules/ folder — to code they are writing, editing, refactoring, or reviewing. Rules are organized as rules/global/ plus one folder per language (rules/luau/, rules/typescript/, and so on). Use this skill for any task that creates or modifies source files in a repository, even a one-line edit or a single new function, and even when the user never mentions rules, standards, style, or comments. Skip it for questions about code that change no files, such as explaining a snippet or reading a stack trace.
+description: Applies the user's coding rules — comments, style consistency, and any custom rules under this skill's rules/ folder (rules/global/ plus one folder per language) — to any task that creates or modifies source files, even a one-line edit, even when the user never mentions rules or style. Skip it for tasks that change no files, like explaining a snippet or reading a stack trace.
+license: MIT
+compatibility: Works with any agent that can read files from a repository. No tool-specific features used.
+allowed-tools: Read Glob Write Edit
 ---
 
 # Code Rules
 
 The user has written down how they want code produced. Those rules live in `rules/`, beside this file, and override your defaults.
 
+## 0. Managing rules directly
+
+If the skill was invoked on its own — `/code-rules`, or a request to add, update, or browse rules or presets — rather than firing because a coding task needs `rules/` applied, this isn't the write-code flow below. Read `references/manage-rules.md` and follow it instead.
+
 ## 1. Load the rules that apply
 
 `rules/global/` applies to every task. `rules/<language>/` applies only when you touch that language.
 
-Map the files you're editing to folder names yourself — `.tsx` to `typescript`, `.luau` and `.lua` to `luau`. A task spanning two languages loads both folders. Read every `.md` in each applicable folder except those whose name starts with `_`.
+Map the files you're editing to folder names yourself — `.tsx` to `typescript`, `.luau` and `.lua` to `luau`. A task spanning two languages loads both folders. Read every `.md` in each applicable folder except those whose name starts with `_`. Never read from `presets/` — it's inert storage, not a rules folder; nothing there is in force until copied into `rules/`.
 
 Global rules are never replaced. A language file is a delta on top of `global/`: it adds to what's already in force, and where the two overlap the language rule wins — it's more specific.
 
 Read them fresh each task. The user adds, edits, and deletes rule files freely, so a rule you remember from an earlier session may be gone or changed.
 
-Within a session, what you read once goes stale the moment `rules/` changes. Re-read the applicable folders before you write again whenever a rule file was added, edited, or deleted — by you or by the user — or when the work reaches a language whose folder you haven't loaded yet. Nothing watches the folder for you; noticing is your job.
-
 ## 2. Name the edge cases instead of guessing
 
-| Situation                                                                               | What to do                                                                                                                                                                                                                                                                                                                                                   |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| A folder name you don't recognize as a language (`luao`, `typscript`)                   | Don't apply it and don't ignore it. Say the folder exists, name your best guess at the intent, ask. A typo that silently disables the user's rules is the worst outcome available.                                                                                                                                                                           |
-| No folder for the language you're editing                                               | Apply `global/` alone, say so once, offer to scaffold `rules/<language>/` from `rules/_TEMPLATE.md`.                                                                                                                                                                                                                                                         |
-| A real language you don't know well — niche DSL, in-house, released after your training | Say so before you write. `global/` still applies: copying observable patterns needs no fluency; idiom and correctness do. Ask for reference files or a style guide, and flag the lines you're unsure of rather than presenting a guess as finished work — "I matched your formatting but can't vouch that this is idiomatic" beats a confident wrong answer. |
-| Loose `.md` files sitting directly in `rules/`                                          | They load nowhere. Point them out — they probably belong in `global/`.                                                                                                                                                                                                                                                                                       |
+- **A folder name you don't recognize as a language** (`luao`, `typscript`) — don't apply it and don't ignore it. Say the folder exists, name your best guess at the intent, ask. A typo that silently disables the user's rules is the worst outcome available.
+- **No folder for the language you're editing** — apply `global/` alone, say so once, offer to scaffold `rules/<language>/` from `rules/_TEMPLATE.md`.
+- **A real language you don't know well** — niche DSL, in-house, released after your training. Say so before you write. `global/` still applies: copying observable patterns needs no fluency; idiom and correctness do. Ask for reference files or a style guide, and flag the lines you're unsure of rather than presenting a guess as finished work — "I matched your formatting but can't vouch that this is idiomatic" beats a confident wrong answer.
+- **Loose `.md` files sitting directly in `rules/`** — they load nowhere. Point them out; they probably belong in `global/`.
 
 ## 3. Apply them
 

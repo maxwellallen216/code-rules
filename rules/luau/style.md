@@ -16,7 +16,7 @@ check_before_finishing: >-
 - require style: `ReplicatedStorage.Shared.X`, relative `script.Parent`, Rojo or Wally aliases
 - module shape: plain table return, `__index` class with `.new`, singleton, Knit service or controller
 - exported types: `export type X = typeof(setmetatable({} :: Fields, X))` versus explicit interfaces
-- private marker: `_` prefix on methods and fields
+- private marker: `_` prefix on fields only; private functions follow `private-functions.md`
 - error handling: `assert` for programmer error, `warn` versus `error`, `pcall` wrapping, Promise usage
 - string building: backtick interpolation, `string.format`, or `..`
 - events and cleanup: where connections are stored, Janitor / Trove / Maid, `task.spawn` versus `coroutine`

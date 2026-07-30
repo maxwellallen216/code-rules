@@ -1,6 +1,6 @@
 # code-rules
 
-A portable Agent Skill that makes AI coding agents write code the way _you_ write code.
+A portable [Agent Skill](https://agentskills.io) that makes AI coding agents write code the way _you_ write code. MIT licensed.
 
 The skill itself is thin. All the opinions live in `rules/` — one markdown file per rule. Add a file to add a rule, delete it to remove one, add a folder to support a language. `SKILL.md` never needs editing.
 
@@ -8,21 +8,41 @@ The skill itself is thin. All the opinions live in `rules/` — one markdown fil
 code-rules/
 ├── SKILL.md                     # loader + workflow (the only file the agent needs to find)
 ├── README.md                    # this file — not read at runtime
-└── rules/
-    ├── _TEMPLATE.md             # copy this to add a rule (leading _ = ignored)
-    ├── global/                  # loaded on every task
-    │   ├── comments.md
-    │   └── style-consistency.md
-    └── luau/                    # loaded only when .luau or .lua is in play
-        ├── comments.md
-        └── style.md
+├── references/
+│   └── manage-rules.md          # loaded only on manual invocation — see "Managing rules" below
+├── rules/
+│   ├── _TEMPLATE.md             # copy this to add a rule (leading _ = ignored)
+│   ├── global/                  # loaded on every task
+│   │   ├── comments.md
+│   │   └── style-consistency.md
+│   └── luau/                    # loaded only when .luau or .lua is in play
+│       ├── comments.md
+│       ├── constant-table-shapes.md
+│       ├── logging.md
+│       ├── private-functions.md
+│       └── style.md
+└── presets/                     # never loaded — inert until copied into rules/, see presets/README.md
+    └── luau/
+        └── file-layout.md       # assumes a specific Rojo layout + Blink codegen; not universal, so not active by default
 ```
 
 Only the folders a task needs get loaded, so a Python task never pays for the Luau rules. Anything left loose in `rules/` loads nowhere — the agent will point that out rather than let a misplaced file silently do nothing.
 
+## Managing rules
+
+Invoke the skill directly — `/code-rules`, or just ask it to add, update, or browse rules — and it offers a menu instead of writing code: add or update a rule, use a preset, or browse what's active. Adding or updating asks a brief description first; it only asks follow-up questions when the description genuinely isn't specific enough to write a checkable rule from, and batches every question into one message with a suggested default. See `references/manage-rules.md` for the exact flow.
+
+## Presets
+
+`presets/` holds rules that aren't active anywhere — a personal library for rules you've written before and want to reuse in a new project, without rewriting them or forcing them onto every install. The agent never reads it directly; a preset does nothing until copied into `rules/global/` or `rules/<language>/` (through the menu above, or by hand). See `presets/README.md`.
+
 ## Install
 
-Copy the whole `code-rules/` folder into the right location for your tool:
+```
+npx skills add MaxwellAllen216/code-rules
+```
+
+Or copy the whole `code-rules/` folder into the right location for your tool:
 
 | Tool                           | Location                                                                                    |
 | ------------------------------ | ------------------------------------------------------------------------------------------- |
