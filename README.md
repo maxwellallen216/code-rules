@@ -28,6 +28,10 @@ code-rules/
 
 Only the folders a task needs get loaded, so a Python task never pays for the Luau rules. Anything left loose in `rules/` loads nowhere — the agent will point that out rather than let a misplaced file silently do nothing.
 
+## Enforcement gate
+
+For any request that may change source files, `SKILL.md` is a mandatory pre-work gate. The agent must load the global and applicable language rules before its first task action, reload them when scope expands or context is lost, and run every loaded rule's final check before claiming completion. If it notices that it started work without the gate, it must stop, load the rules, and audit and correct all work already performed before continuing.
+
 ## Managing rules
 
 Invoke the skill directly — `/code-rules`, or just ask it to add, update, or browse rules — and it offers a menu instead of writing code: add or update a rule, use a preset, or browse what's active. Adding or updating asks a brief description first; it only asks follow-up questions when the description genuinely isn't specific enough to write a checkable rule from, and batches every question into one message with a suggested default. See `references/manage-rules.md` for the exact flow.
@@ -53,10 +57,10 @@ Or copy the whole `code-rules/` folder into the right location for your tool:
 | Claude.ai / Claude Desktop     | upload the packaged `.skill` file                                                           |
 | Anything without skill support | point the agent's instructions file at `SKILL.md` (see below)                               |
 
-For tools that only read a single instructions file — `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `.github/copilot-instructions.md` — add one line to it:
+For tools that only read a single instructions file — `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `.github/copilot-instructions.md` — add this instruction:
 
 ```markdown
-Before writing or editing code, read and follow .agents/skills/code-rules/SKILL.md.
+For every request that may change source files, treat `.agents/skills/code-rules/SKILL.md` as a mandatory pre-work gate. Read it before the first task action, enforce every applicable rule, reload it after context loss or when scope expands, and do not edit or report completion unless all rule checks pass.
 ```
 
 `SKILL.md` uses no tool-specific syntax, so any agent that can read files and follow instructions can run it.

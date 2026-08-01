@@ -1,6 +1,6 @@
 ---
 name: code-rules
-description: Applies the user's coding rules — comments, style consistency, and any custom rules under this skill's rules/ folder (rules/global/ plus one folder per language) — to any task that creates or modifies source files, even a one-line edit, even when the user never mentions rules or style. Skip it for tasks that change no files, like explaining a snippet or reading a stack trace.
+description: MANDATORY PRE-WORK GATE for every task that may create, modify, delete, move, generate, format, refactor, or fix source files. Load this skill before the first task action and enforce every applicable rule under rules/global/ and the matching language folder, even for one-line edits, resumed work, subtasks, and requests that never mention rules or style. Do not wait for an AGENTS.md reminder. Skip only when the request cannot result in source-file changes, such as explanation-only or read-only diagnosis.
 license: MIT
 compatibility: Works with any agent that can read files from a repository. No tool-specific features used.
 allowed-tools: Read Glob Write Edit
@@ -9,6 +9,21 @@ allowed-tools: Read Glob Write Edit
 # Code Rules
 
 The user has written down how they want code produced. Those rules live in `rules/`, beside this file, and override your defaults.
+
+## Mandatory gate
+
+Treat rule loading as a prerequisite, not a cleanup pass.
+
+1. Before the first task action, decide whether the request can result in source-file changes. If yes, load this skill now, before planning implementation, running project commands, or editing.
+2. Identify every language or code-like file type the task may touch from the request and known paths. Read all applicable rules before doing work on those files. If the file types are genuinely unknown, load `rules/global/` first; use read-only discovery only to identify them, then immediately load their rule folders before continuing.
+3. Keep a private checklist of the rule files loaded, their pre-work requirements, approval gates, and `check_before_finishing` tests. Do not rely on a summary in `AGENTS.md`, memory of a prior task, or familiarity with the rules.
+4. Re-run this gate whenever scope expands to another language or file type. A new subtask, resumed task, handoff, or context compaction is not an exemption: if the full applicable rules are no longer in context, read them again before continuing.
+5. Before delegating source-file work, explicitly require the delegated agent to load this skill and the applicable rules first. Audit delegated output against the same checks before accepting it.
+6. Do not edit or generate source files until every applicable pre-work requirement is complete. Do not report completion until every loaded rule's final check passes against the finished diff.
+
+Fail closed if this skill or an applicable rule file cannot be found or read: report the missing path or read error, and do not modify source files until the rules are available.
+
+If you discover that work started before this gate ran, stop immediately. Load the applicable rules, audit all work already performed in the task, and correct every violation before continuing. Explicitly tell the user the gate was missed and what you rechecked; never merely acknowledge the miss and move on.
 
 ## 0. Managing rules directly
 
