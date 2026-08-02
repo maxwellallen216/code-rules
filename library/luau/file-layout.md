@@ -1,5 +1,6 @@
 ---
 name: File layout — Luau
+seed: false
 applies: >-
   whenever you create or modify `.luau` or `.lua` files in a Rojo project with
   a shared `src/Shared/Types/Types.luau` module. Assumes that path; adjust it

@@ -1,5 +1,6 @@
 ---
 name: Comments — Luau
+seed: true
 applies: >-
   whenever you write or edit `.luau` or `.lua` files
 rule: >-

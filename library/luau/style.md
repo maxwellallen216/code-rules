@@ -1,5 +1,6 @@
 ---
 name: Style — Luau
+seed: true
 applies: >-
   whenever you create or modify `.luau` or `.lua` files
 rule: >-

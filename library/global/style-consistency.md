@@ -1,5 +1,6 @@
 ---
 name: Style consistency
+seed: true
 applies: >-
   whenever you create or modify files in an existing codebase
 rule: >-

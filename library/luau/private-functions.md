@@ -1,5 +1,6 @@
 ---
 name: Private functions — Luau
+seed: true
 applies: >-
   whenever you create or modify a first-party `.luau` or `.lua` ModuleScript
 rule: >-

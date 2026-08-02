@@ -1,5 +1,6 @@
 ---
 name: Logging — Luau
+seed: true
 applies: >-
   whenever you create or modify first-party `.luau` or `.lua` files
 rule: >-

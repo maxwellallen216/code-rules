@@ -1,5 +1,6 @@
 ---
 name: Constant table shapes — Luau
+seed: true
 applies: >-
   whenever you create or modify a Luau constant whose value is a table
 rule: >-

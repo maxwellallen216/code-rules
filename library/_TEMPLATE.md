@@ -1,5 +1,6 @@
 ---
 name: <rule name>
+seed: true
 applies: >-
   <when this rule is in force — e.g. "whenever you edit code", "only for new
   files", "only in code review">
@@ -13,10 +14,14 @@ check_before_finishing: >-
 ---
 
 <!--
-Copy this file into rules/global/ (applies everywhere) or rules/<language>/
-(applies only to that language) under a descriptive name. Delete a file to
-deactivate its rule. Files starting with _ are ignored, as is anything left
-loose directly in rules/.
+Copy this file into library/global/ (applies everywhere) or library/<language>/
+(applies only to that language) under a descriptive name.
+
+library/ is a catalog, not the rules in force. What an agent enforces lives in
+<repo>/.code-rules/, seeded from here. `seed: true` copies this file in
+automatically; `seed: false` keeps it catalog-only, added by hand or through
+the /code-rules menu. Files starting with _ are ignored, as is anything left
+loose directly in a catalog or rules root.
 
 Language files are deltas. Everything in global/ already applies, so write
 only what differs for that language.

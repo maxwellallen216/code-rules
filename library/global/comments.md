@@ -1,5 +1,6 @@
 ---
 name: Comments
+seed: true
 applies: >-
   whenever you write or edit code
 rule: >-
