@@ -1,0 +1,27 @@
+{
+  "_comment": "Reference only. Run `node scripts/install-hooks.mjs --codex` to generate this with the real absolute path and merge it into ~/.codex/hooks.json (or <repo>/.codex/hooks.json with --project). Codex plugins cannot declare hooks, so this file is never loaded from here. Replace ABSOLUTE_PATH_TO if you would rather paste it yourself.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [{ "type": "command", "command": "node \"ABSOLUTE_PATH_TO/code-rules/scripts/gate.mjs\"", "timeout": 30 }]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [{ "type": "command", "command": "node \"ABSOLUTE_PATH_TO/code-rules/scripts/gate.mjs\"", "timeout": 30 }]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^(apply_patch|Edit|Write|MultiEdit)$",
+        "hooks": [{ "type": "command", "command": "node \"ABSOLUTE_PATH_TO/code-rules/scripts/gate.mjs\"", "timeout": 30 }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(Read|View|Bash|shell|apply_patch|Edit|Write)$",
+        "hooks": [{ "type": "command", "command": "node \"ABSOLUTE_PATH_TO/code-rules/scripts/gate.mjs\"", "timeout": 30 }]
+      }
+    ]
+  }
+}

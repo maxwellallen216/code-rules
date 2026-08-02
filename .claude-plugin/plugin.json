@@ -1,0 +1,13 @@
+{
+  "name": "code-rules",
+  "version": "2.0.0",
+  "description": "Enforces your own coding conventions. Rules live in the project's .code-rules/ folder; a hook blocks source edits until the applicable ones have been read.",
+  "author": {
+    "name": "Maxwell Allen",
+    "url": "https://github.com/MaxwellAllen216"
+  },
+  "homepage": "https://github.com/MaxwellAllen216/code-rules",
+  "repository": "https://github.com/MaxwellAllen216/code-rules",
+  "license": "MIT",
+  "keywords": ["code-style", "conventions", "rules", "linting", "hooks", "enforcement"]
+}

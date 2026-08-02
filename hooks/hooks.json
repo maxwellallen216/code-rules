@@ -1,0 +1,45 @@
+{
+  "description": "code-rules gate — blocks source edits until the project's applicable rules have been read, and injects the rule index at session start.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs"],
+            "timeout": 30,
+            "statusMessage": "Loading code-rules index"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs"],
+            "timeout": 30,
+            "statusMessage": "Checking code-rules"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/gate.mjs"],
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
